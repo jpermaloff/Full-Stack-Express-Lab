@@ -10,52 +10,35 @@ template: `
     <input type="text" ng-model="$ctrl.newItem.quantity" placeholder="Quantity">
     <button>Add Item</button>
   </form>
-  <p ng-repeat="item in $ctrl.shoppingCart track by $index">{{ item }}
+  <p ng-repeat="item in $ctrl.shoppingCart track by $index">
+  {{ item }}
     <button ng-click="$ctrl.deleteCartItem($ctrl.shoppingCart[$index].id);">X</button>
     <button ng-click="$ctrl.updateCartItem($ctrl.shoppingCart[$index].id, $ctrl.newItem);">Update</button>
   </p>
   `,
-  controller: function($http) {
-    const vm = this;
-
-    vm.getAllItems = () => {
-     $http({
-        url: "/api/shop/cart",
-        method: "GET"                 
-     }).then((response) => {
-        vm.shoppingCart = response.data;         
-     })
+  controller: ["CartService", function(CartService){
+      const vm = this;
+      vm.getAllItems = () => {
+        CartService.getAllItems().then((response) => {
+            vm.shoppingCart = response;
+        });
+      };
+      vm.postCartItem = (newItem) => {
+          CartService.postCartItem(newItem).then((response) => {
+              vm.shoppingCart = response;
+          });
+      };
+      vm.updateCartItem = (index, newItem) => {
+          CartService.updateCartItem(index, newItem).then((response) => {
+            vm.shoppingCart = response;
+          });
     }
-
-    vm.deleteCartItem = function (index) {
-        $http({
-            url: "/api/shop/cart/" + index,
-            method: "DELETE"
-        }).then(function (response) {
-            vm.shoppingCart = response.data;
-        })                
-    }
-
-    vm.updateCartItem = (index, newItem) => {
-        $http({
-            url: "/api/shop/cart/" + index,
-            method : "PUT",
-            data: newItem                                
-        }).then((response) => { 
-            vm.shoppingCart = response.data                                          
-        });                                                                
-    }        
-
-    vm.postCartItem = (newItem) => {
-        $http({
-            url: "api/shop/cart/",
-            method: "POST",
-            data: newItem                                                                                                                        
-        }).then((response) => {
-            vm.shoppingCart = response.data;                        
-        });                
-    }
-  }
+      vm.deleteCartItem = (index) => {
+          CartService.deleteCartItem(index).then((response) => {
+              vm.shoppingCart = response;
+          });
+      }
+  }]
 }
 
 angular.module("App")
