@@ -5,4 +5,5 @@ angular
       .when("/cart", {
         template: "<cart></cart>"
       })
+      .otherwise ({redirectTo: "/cart"})
   });
