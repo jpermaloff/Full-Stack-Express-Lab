@@ -2,70 +2,36 @@
 
 const express = require("express");
 const cart = express.Router();
-
-const shoppingCart = [
-    {
-        product: "Milk",
-        price: 3,
-        quantity: 1,
-        id: 0
-    },
-    {
-        product: "Eggs",
-        price: .25,
-        quantity: 12,
-        id: 1
-    },
-    {
-        product: "Apple",
-        price: .50,
-        quantity: 3,
-        id: 2
-    }
-];
-
-let idCount = shoppingCart.length;
+const pool = require("../pg-connection-pool");
 
 cart.get("/cart", (req, res) => {
-    res.send(shoppingCart)
+    pool.query("select * from ShoppingCart").then((result) => {
+        res.send(result.rows) 
+    })
 })
 
 cart.delete("/cart/:id", function (req, res) {
-    let count = 0;
-    for (let item of shoppingCart) {
-        if (item.id == req.params.id) {
-            shoppingCart.splice(count, 1);
-        }
-        count++;
-    }
-    res.send(shoppingCart);
+    pool.query("Delete From ShoppingCart Where id=$1::int", [parseInt(req.params.id)]).then(() => {
+        pool.query("Select * From ShoppingCart").then((results) => {
+          res.send(results.rows);
+    });
+  });
 });
 
 cart.post("/cart", (req, res) => {
-    shoppingCart.push({
-        product: req.body.product,
-        price: req.body.price,
-        quantity: req.body.quantity,
-        id: idCount++
+    pool.query("Insert Into ShoppingCart(product, price, quantity) Values($1::text, $2::int, $3::int)", [req.body.product, req.body.price, req.body.quantity]).then(() => {
+        pool.query("Select * From ShoppingCart").then((results) => {
+          res.send(results.rows);
     });
-    res.send(shoppingCart);
+  }); 
 });
 
 cart.put("/cart/:id", function (req, res) {
-    let count = 0;
-    for (let item of shoppingCart) {
-        if (item.id == req.params.id) {
-            let updatedItem = {
-                product: req.body.product,
-                price: req.body.price,
-                quantity: req.body.quantity,
-            }
-            updatedItem.id = item.id;
-            shoppingCart.splice(count, 1, updatedItem);
-        }
-        count++;
-    }
-    res.send(shoppingCart);
+    pool.query("Update ShoppingCart set product=$1::text, price=$3::int, quantity=$4::int Where id=$2::int", [req.body.product, parseInt(req.params.id), req.body.price, req.body.quantity]).then(() => {
+        pool.query("Select * From ShoppingCart").then((results) => {
+          res.send(results.rows);
+        });
+      });
 });
 
 module.exports = cart;

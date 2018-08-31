@@ -4,7 +4,7 @@ function CartService($http) {
 
     vm.getAllItems = () => {
      return $http({
-        url: "/api/shop/cart",
+        url: "/cart",
         method: "GET"                 
      }).then((response) => {
         return vm.shoppingCart = response.data;         
@@ -13,7 +13,7 @@ function CartService($http) {
 
     vm.deleteCartItem = function (index) {
         return $http({
-            url: "/api/shop/cart/" + index,
+            url: "/cart/" + index,
             method: "DELETE"
         }).then(function (response) {
             return vm.shoppingCart = response.data;
@@ -22,7 +22,7 @@ function CartService($http) {
 
     vm.updateCartItem = (index, newItem) => {
         return $http({
-            url: "/api/shop/cart/" + index,
+            url: "/cart/" + index,
             method : "PUT",
             data: newItem                                
         }).then((response) => { 
@@ -32,9 +32,9 @@ function CartService($http) {
 
     vm.postCartItem = (newItem) => {
         return $http({
-            url: "api/shop/cart/",
+            url: "/cart",
             method: "POST",
-            data: newItem                                                                                                                        
+            data: newItem                                                                                                               
         }).then((response) => {
             return vm.shoppingCart = response.data;                        
         });                
