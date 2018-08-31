@@ -1,23 +1,22 @@
 "use strict"
 const cart = {
 template: `
-<section class=formSection>
-<section class="getBtn">
+<section class="container">
+<form>
   <button ng-click="$ctrl.getAllItems();">Get Items</button>
-  </section>
-  <form ng-submit="$ctrl.addItem($ctrl.newItem);">
     <input type="text" ng-model="$ctrl.newItem.product" placeholder="Product">
     <input type="text" ng-model="$ctrl.newItem.price" placeholder="Price">
     <input type="text" ng-model="$ctrl.newItem.quantity" placeholder="Quantity">
-    <button>Add Item</button>
+    <button ng-click="$ctrl.addItem($ctrl.newItem);">Add Item</button>
   </form>
-  </section>
   <section class="listSection" ng-repeat="item in $ctrl.shoppingCart track by $index">
   <p class="item"> Product: {{ item.product }} </p>
-  <p class="item"> Price: $ {{ item.price }} </p>
-   <p class="item"> Quantity: {{ item.quantity }} </p>
+  <p class="item"> Price: {{ item.price | currency}} </p>
+  <p class="item"> Quantity: {{ item.quantity }} </p>
     <button ng-click="$ctrl.deleteItem($ctrl.shoppingCart[$index].id);">X</button>
-    <button ng-click="$ctrl.updateItem($ctrl.shoppingCart[$index].id, $ctrl.newItem);">Update</button>
+    <input type="text" ng-model="$ctrl.newItem.quantity" placeholder="Update Quantity">
+    <button ng-click="$ctrl.updateItem($ctrl.shoppingCart[$index].id, $ctrl.newItem);">Update Quantity</button>
+  </section>
   </section>
   `,
   controller: ["CartService", function(CartService){

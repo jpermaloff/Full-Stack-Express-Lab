@@ -1,22 +1,21 @@
 body {
     background-color: lightblue;
 }
+.container {
+    margin: 0 auto;
+}
 form {
     display: flex;
     flex-direction: column;
     margin: 0 auto;
     width: 50%;
-    /* border: 5px solid red */
+    justify-content: center;
 }
 a {
     margin: 0 auto;
 }
-.getBtn {
-margin: 0 auto;
-width: 55%;
-}
 .listSection {
-    width: 50%;
+    width: 46%;
     margin: 0 auto;
     background-color: white;
     margin-top: 30px;
@@ -33,17 +32,15 @@ width: 55%;
 }
 button {
     border-radius: 5px;
-    margin: 15px;
+    margin: 10px auto;
     width: 90%;
-}
-.formSection {
-    margin: 0 auto;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
+    border: none;
+    padding: 10px;
 }
 input {
     border: 3px solid black;
-    margin: 10px;
+    margin: 10px auto;
     padding: 10px;
+    width: 87%;
+    border-radius: 5px;
 }
