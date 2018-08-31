@@ -14,8 +14,8 @@ template: `
   <p class="item"> Price: {{ item.price | currency}} </p>
   <p class="item"> Quantity: {{ item.quantity }} </p>
     <button ng-click="$ctrl.deleteItem($ctrl.shoppingCart[$index].id);">X</button>
-    <input type="text" ng-model="$ctrl.newItem.quantity" placeholder="Update Quantity">
-    <button ng-click="$ctrl.updateItem($ctrl.shoppingCart[$index].id, $ctrl.newItem);">Update Quantity</button>
+    <input type="text" ng-model="$ctrl.newItem[$index].quantity" placeholder="Update Quantity">
+    <button ng-click="$ctrl.updateItem($ctrl.shoppingCart[$index].id, $ctrl.newItem[$index]);">Update Quantity</button>
   </section>
   </section>
   `,
